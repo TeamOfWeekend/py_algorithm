@@ -78,27 +78,74 @@ class BinaryWatch:
                     minute_calc = base_minutes[i] + base_minutes[j]
                     if minute_calc > 59:
                         continue
-                        res_minutes.append(minute_calc)
+                    res_minutes.append(minute_calc)
             #return [3, 5, 9, 17, 33, 6, 10, 18, 34, 12, 20, 36, 24, 40, 48]
         elif 3 == num:
-            return [7, 11, 19, 35, 13, 21, 37, 25, 41, 49, 14, 22, 38, 26, 42, 50, 28, 44, 52, 56]
+            for i in range(0, len(base_minutes)):
+                for j in range(i+1, len(base_minutes)):
+                    for k in range(j + 1, len(base_minutes)):
+                        minute_calc = base_minutes[i] + base_minutes[j] + base_minutes[k]
+                        if minute_calc > 59:
+                            continue
+                        res_minutes.append(minute_calc)
+            #return [7, 11, 19, 35, 13, 21, 37, 25, 41, 49, 14, 22, 38, 26, 42, 50, 28, 44, 52, 56]
         elif 4 == num:
-            return [15, 23, 39, 27, 43, 51, 29, 45, 53, 57, 30, 46, 54, 58]
+            for i in range(0, len(base_minutes)):
+                for j in range(i+1, len(base_minutes)):
+                    for k in range(j + 1, len(base_minutes)):
+                        for m in range(k + 1, len(base_minutes)):
+                            minute_calc = base_minutes[i] + base_minutes[j] + base_minutes[k] + base_minutes[m]
+                            if minute_calc > 59:
+                                continue
+                            res_minutes.append(minute_calc)
+            #return [15, 23, 39, 27, 43, 51, 29, 45, 53, 57, 30, 46, 54, 58]
         elif 5 == num:
-            return [31, 47, 55, 59]
+            for i in range(0, len(base_minutes)):
+                for j in range(i+1, len(base_minutes)):
+                    for k in range(j + 1, len(base_minutes)):
+                        for m in range(k + 1, len(base_minutes)):
+                            for n in range(m + 1, len(base_minutes)):
+                                minute_calc = base_minutes[i] + base_minutes[j] + base_minutes[k] + base_minutes[m] \
+                                              + base_minutes[n]
+                                if minute_calc > 59:
+                                    continue
+                                res_minutes.append(minute_calc)
+            #return [31, 47, 55, 59]
 
         return res_minutes
 
 
-    def getTimeByHM(self, hours, minutes):
+    def getAllBinaryTime(self, num_bit):
         time_list = []
-        for hour in hours:
-            for minute in minutes:
-                time_get = 0
+        if (num_bit < 0) or (num_bit > 10):
+            return None
+        for hour_bit in range(num_bit+1):
+            minute_bit = num_bit - hour_bit
+            hours = self.getHourByNum(hour_bit)
+            minutes = self.getMinuteByNum(minute_bit)
+            if (hour_bit < 1) or (hour_bit > 3):
+                continue
+            if (minute_bit > 5):
+                continue
+            for hour in hours:
+                for minute in minutes:
+                    time_get = "%d:%02d" % (hour, minute)
+                    time_list.append(time_get)
+        return time_list
+
 
 
 s = BinaryWatch()
-print(s.getHourByNum(1))
-print(s.getHourByNum(2))
-print(s.getHourByNum(3))
-print(s.getHourByNum(4))
+# print(s.getHourByNum(1))
+# print(s.getHourByNum(2))
+# print(s.getHourByNum(3))
+# print(s.getHourByNum(4))
+# print(s.getMinuteByNum(0))
+# print(s.getMinuteByNum(1))
+# print(s.getMinuteByNum(2))
+# print(s.getMinuteByNum(3))
+# print(s.getMinuteByNum(4))
+# print(s.getMinuteByNum(5))
+# print(s.getMinuteByNum(6))
+# print(s.getTimeByHourMinute(1,2))
+print(s.getAllBinaryTime(8))
