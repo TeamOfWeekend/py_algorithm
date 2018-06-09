@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 """
-@author:dingxiaojie
-@contact:dingxiaojie@huahuan.com
+@author:Leo
+@contact:lipf0627@163.com
 @file:algo_binary_watch
 @time:2018/6/4 10:41
 @desc:
@@ -14,33 +14,22 @@
 #小时不会以零开头，比如 “01:00” 是不允许的，应为 “1:00”。
 #分钟必须由两位数组成，可能会以零开头，比如 “10:2” 是无效的，应为 “10:02”。
 
+
+MAX_HOUR_BIT = 3
+MIN_HOUR_BIT = 1
+MAX_MINUTE_BIT = 5
+MIN_MINUTE_BIT = 0
+MAX_TOTAL_BIT = MAX_HOUR_BIT + MAX_MINUTE_BIT
+MIN_TOTAL_BIT = MIN_HOUR_BIT + MIN_MINUTE_BIT
+
+
 class BinaryWatch:
-    def readBinaryWatch(self, num):
-        """
-        :type num: int
-        :rtype: List[str]
-        """
-        if num > 10:
-            return False
-
-        res_time = []
-
-        for num_in_hour in (0, num + 1):
-            if num_in_hour > 3:
-                break
-            num_in_minute = num - num_in_hour
-
-            if 1 == num_in_hour:
-                res_hour = self.getHourByNum(num_in_hour)
-                res_minute = self.getMinuteByNum(num_in_minute)
-            elif 2 == num_in_hour:
-                res_minute = 0
 
     def getHourByNum(self, num):
         base_hours = [1, 2, 4, 8]
         res_hours = []
 
-        if (num < 1) or (num > 3):
+        if (num < MIN_HOUR_BIT) or (num > MAX_HOUR_BIT):
             return None
         elif 1 == num:
             res_hours = base_hours[:]
@@ -66,7 +55,7 @@ class BinaryWatch:
     def getMinuteByNum(self, num):
         base_minutes = [1, 2, 4, 8, 16, 32]
         res_minutes = []
-        if num > 5:
+        if num > MAX_MINUTE_BIT:
             return None
         elif 0 == num:
             return [0]
@@ -117,9 +106,9 @@ class BinaryWatch:
 
     def getAllBinaryTime(self, num_bit):
         time_list = []
-        if (num_bit < 0) or (num_bit > 10):
-            return None
-        for hour_bit in range(num_bit+1):
+        if (num_bit < MIN_TOTAL_BIT) or (num_bit > MAX_TOTAL_BIT):
+            raise ValueError
+        for hour_bit in range(MIN_HOUR_BIT, num_bit+1):
             minute_bit = num_bit - hour_bit
             hours = self.getHourByNum(hour_bit)
             minutes = self.getMinuteByNum(minute_bit)
@@ -136,16 +125,5 @@ class BinaryWatch:
 
 
 s = BinaryWatch()
-# print(s.getHourByNum(1))
-# print(s.getHourByNum(2))
-# print(s.getHourByNum(3))
-# print(s.getHourByNum(4))
-# print(s.getMinuteByNum(0))
-# print(s.getMinuteByNum(1))
-# print(s.getMinuteByNum(2))
-# print(s.getMinuteByNum(3))
-# print(s.getMinuteByNum(4))
-# print(s.getMinuteByNum(5))
-# print(s.getMinuteByNum(6))
-# print(s.getTimeByHourMinute(1,2))
 print(s.getAllBinaryTime(8))
+print(s.getAllBinaryTime(10))
